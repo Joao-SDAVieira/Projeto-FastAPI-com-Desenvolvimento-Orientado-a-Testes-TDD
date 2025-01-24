@@ -16,6 +16,16 @@ pytest = "^8.3.4"
 pytest-asyncio = "^0.25.2"
 pre-commit = "^4.1.0"
 
+[tool.pytest.ini_options]
+pythonpath = "."
+asyncio_mode = "auto"
+addopts = [
+  "--strict-config",
+  "--strict-markers",
+  "--ignore=docs_src",
+]
+xfail_strict = true
+junit_family = "xunit2"
 
 [build-system]
 requires = ["poetry-core"]
