@@ -1,0 +1,8 @@
+uvicorn store.main:app --reload
+pre-commit = poetry run pre-commit install
+
+trazendo arquivos do repositório remoto para o local evitando conflitos
+git pull origin main --allow-unrelated-histories
+
+rodar os testes:
+poetry run pytest -v
