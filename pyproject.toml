@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "tdd project"
+version = "0.1.0"
+description = ""
+authors = ["João Vieira"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.7"
+uvicorn = "^0.34.0"
+pydantic = "^2.10.6"
+pydantic-settings = "^2.7.1"
+motor = "^3.6.1"
+pytest = "^8.3.4"
+pytest-asyncio = "^0.25.2"
+pre-commit = "^4.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
