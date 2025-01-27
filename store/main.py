@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from store.core.config import settings
-
+from store.routers import api_router
 
 # app = FastAPI(title=)
 
@@ -16,4 +16,5 @@ class App(FastAPI):
         )
 
 
-app = App
+app = App()
+app.include_router(router=api_router)
