@@ -1,5 +1,6 @@
 import asyncio
 import pytest
+from httpx import AsyncClient
 
 from uuid import UUID
 
@@ -31,6 +32,19 @@ async def clear_collections(mongo_client):
             continue
 
         await mongo_client.get_database()[collection_name].delete_many({})
+
+
+@pytest.fixture
+async def client():
+    from store.main import app
+
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
+
+
+@pytest.fixture
+def products_url() -> str:
+    return "/products/"
 
 
 @pytest.fixture
