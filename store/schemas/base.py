@@ -12,7 +12,7 @@ class BaseSchemaMixin(BaseModel):
 class OutSchema(BaseModel):
     id: UUID4 = Field()
     created_at: datetime = Field()
-    created_at: datetime = Field()
+    updated_at: datetime = Field()
 
     @model_validator(mode="before")
     def set_schema(cls, data):

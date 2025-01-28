@@ -10,6 +10,7 @@ async def test_controller_should_return_success(client: AsyncClient, products_ur
 
     content = response.json()
 
+    del content["updated_at"]
     del content["created_at"]
     del content["id"]
 
@@ -29,6 +30,7 @@ async def test_controller_read_single_product_should_return_success(
 
     content = response.json()
 
+    del content["updated_at"]
     del content["created_at"]
 
     assert content == {
@@ -71,6 +73,7 @@ async def test_controller_update_product_should_return_success(
     content = response.json()
     content = response.json()
 
+    del content["updated_at"]
     del content["created_at"]
     assert response.status_code == status.HTTP_200_OK
     assert content == {

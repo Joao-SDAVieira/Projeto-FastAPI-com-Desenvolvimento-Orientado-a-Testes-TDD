@@ -13,6 +13,12 @@ router = APIRouter(tags=["products"])
 async def create_product(
     body: ProductIn = Body(...), usecase: ProductUseCase = Depends()
 ) -> ProductOut:
+    try:
+        await usecase.get_product_by_name(name=body.name)
+
+    except NotFoundException as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=exc.message)
+
     return await usecase.create(body=body)
 
 
@@ -38,7 +44,10 @@ async def update_product(
     body: ProductUpdate = Body(...),
     usecase: ProductUseCase = Depends(),
 ) -> ProductOut:
-    return await usecase.update(id=id, body=body)
+    try:
+        return await usecase.update(id=id, body=body)
+    except NotFoundException as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=exc.message)
 
 
 @router.delete(path="/{id}", status_code=status.HTTP_204_NO_CONTENT)
