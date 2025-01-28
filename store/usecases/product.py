@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Optional
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
@@ -37,8 +38,20 @@ class ProductUseCase:
 
         raise NotFoundException(message=f"Product {name} already exists")
 
-    async def query(self) -> list[ProductOut]:
-        return [ProductOut(**item) async for item in self.collection.find()]
+    async def query(
+        self, min_price: Optional[float] = None, max_price: Optional[float] = None
+    ) -> list[ProductOut]:
+        filter = {}
+        if min_price is not None:
+            filter["price"] = {"$gte": min_price}
+
+        if max_price is not None:
+            if "price" in filter:
+                filter["price"]["$lte"] = max_price
+            else:
+                filter["price"] = {"$lte": max_price}
+
+        return [ProductOut(**item) async for item in self.collection.find(filter)]
 
     async def update(self, id: UUID, body: ProductUpdate) -> ProductUpdateOut:
         # product = ProductUpdate(**body.model_dump(exclude_none=True))

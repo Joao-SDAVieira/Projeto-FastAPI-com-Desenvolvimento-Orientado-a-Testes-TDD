@@ -1,5 +1,5 @@
-from typing import List
-from fastapi import APIRouter, Body, Depends, HTTPException, status, Path
+from typing import List, Optional
+from fastapi import APIRouter, Body, Depends, HTTPException, status, Path, Query
 from pydantic import UUID4
 
 from store.schemas.product import ProductIn, ProductOut, ProductUpdate
@@ -34,8 +34,12 @@ async def read_single_product(
 
 
 @router.get(path="/", status_code=status.HTTP_200_OK)
-async def read_products(usecase: ProductUseCase = Depends()) -> List[ProductOut]:
-    return await usecase.query()
+async def read_products(
+    min_price: Optional[float] = Query(None, ge=0, description="Preço mínimo"),
+    max_price: Optional[float] = Query(None, ge=0, description="Preço máximo"),
+    usecase: ProductUseCase = Depends(),
+) -> List[ProductOut]:
+    return await usecase.query(min_price=min_price, max_price=max_price)
 
 
 @router.patch(path="/{id}", status_code=status.HTTP_200_OK)
